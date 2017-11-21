@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="vue.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <div id="app" style="border: 1px solid blue;" class="app-blue app">
+    <a href="javascript:;" @click="tryClick">试一下href</a>
+    <div style="border: 1px solid red;">
+      这里来试一下是不是静态的呢
+      <div v-html="message" ref="message"></div>
+      <div v-for="item in list" :key="item">{{item}}</div>
+      <!-- <template v-if="show">
+        <div>
+          这里改成有if指令的template
+        </div>
+        <div>
+          这里改成有if指令的template
+        </div>
+        <div>
+          这里改成有if指令的template
+        </div>
+        <div>
+          这里改成有if指令的template
+        </div>
+      </template> -->
+    </div>
+    <!-- {{message}}
+    <div>
+      这里由于子元素是动态节点，所以这是一个动态节点
+      <span>
+        哈哈哈
+      </span>
+      <test>
+        <h1 slot="header">这里是slot的header</h1>
+        <p>内容</p>
+        <p>内容</p>
+        <p slot="footer">这里是slot的footer</p>
+      </test>
+      <ul>
+        <li v-for="item in list"
+            :title="item"></li>
+      </ul>
+    </div> -->
+  </div>
+</body>
+<script>
+  Vue.component('test', {
+    name: 'test',
+    template:
+      `<div>
+        <header style="border: 1px solid red;">
+          <slot name="header"></slot>
+        </header>
+        <main style="border: 1px solid blue;">
+          <slot></slot>
+        </main>
+        <footer style="border: 1px solid pink;">
+          <slot name="footer"></slot>
+        </footer>
+      </div>`
+  })
+  var app = new Vue({
+    el: '#app',
+    data: {
+      message: 'Hello Worlda',
+      list: [ 'haha', 'hehe', 'heihei' ],
+      show: false
+    },
+    methods: {
+      tryClick(){
+        console.log('try')
+      }
+    }
+  })
+</script>
+</html>
