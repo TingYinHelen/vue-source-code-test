@@ -142,7 +142,6 @@ function hasOwn (obj, key) {
 /**
  * Create a cached version of a pure function.
  */
-
 function cached (fn) {
   var cache = Object.create(null);
   return (function cachedFn (str) {
@@ -8187,7 +8186,7 @@ var isNonPhrasingTag = makeMap(
 );
 
 /*  */
-
+console.log(modules$1)
 var baseOptions = {
   expectHTML: true,
   modules: modules$1,
@@ -9114,6 +9113,7 @@ var isStaticKey;
 var isPlatformReservedTag;
 
 var genStaticKeysCached = cached(genStaticKeys$1);
+
 /**
  * Goal of the optimizer: walk the generated template AST tree
  * and detect sub-trees that are purely static, i.e. parts of
@@ -9143,9 +9143,7 @@ function genStaticKeys$1 (keys) {
 }
 
 function markStatic$1 (node) {
-  //注释一下这里就是AST传入的node（啦啦啦）
   node.static = isStatic(node);
-
   if (node.type === 1) {
     // do not make component slot content static. this avoids
     // 1. components not able to mutate slot nodes
@@ -9388,9 +9386,7 @@ var baseDirectives = {
 var CodegenState = function CodegenState (options) {
   this.options = options;
   this.warn = options.warn || baseWarn;
-
   this.transforms = pluckModuleFunction(options.modules, 'transformCode');
-  //这个函数是用来做什么的
   this.dataGenFns = pluckModuleFunction(options.modules, 'genData');
   this.directives = extend(extend({}, baseDirectives), options.directives);
   var isReservedTag = options.isReservedTag || no;
@@ -9399,13 +9395,8 @@ var CodegenState = function CodegenState (options) {
   this.staticRenderFns = [];
 };
 
-/**
- *
- *
- *
- *
- *
- */
+
+
 function generate (
   ast,
   options
@@ -9419,7 +9410,6 @@ function generate (
 }
 
 function genElement (el, state) {
-
   if (el.staticRoot && !el.staticProcessed) {
     return genStatic(el, state)
   } else if (el.once && !el.onceProcessed) {
@@ -9439,8 +9429,8 @@ function genElement (el, state) {
       code = genComponent(el.component, el, state);
     } else {
       var data = el.plain ? undefined : genData$2(el, state);
-      var children = el.inlineTemplate ? null : genChildren(el, state, true);
 
+      var children = el.inlineTemplate ? null : genChildren(el, state, true);
       code = "_c('" + (el.tag) + "'" + (data ? ("," + data) : '') + (children ? ("," + children) : '') + ")";
     }
     // module transforms
@@ -9561,6 +9551,7 @@ function genData$2 (el, state) {
   // directives may mutate the el's other properties before they are generated.
   var dirs = genDirectives(el, state);
   if (dirs) { data += dirs + ','; }
+
   // key
   if (el.key) {
     data += "key:" + (el.key) + ",";
@@ -9582,8 +9573,7 @@ function genData$2 (el, state) {
   }
   // module data generation functions
   for (var i = 0; i < state.dataGenFns.length; i++) {
-    data += state.dataGenFns[i](el)
-
+    data += state.dataGenFns[i](el);
   }
   // attributes
   if (el.attrs) {
@@ -9717,7 +9707,6 @@ function genChildren (
 ) {
   var children = el.children;
   if (children.length) {
-
     var el$1 = children[0];
     // optimize single v-for
     if (children.length === 1 &&
@@ -9727,14 +9716,10 @@ function genChildren (
     ) {
       return (altGenElement || genElement)(el$1, state)
     }
-
     var normalizationType = checkSkip
       ? getNormalizationType(children, state.maybeComponent)
       : 0;
-
-
     var gen = altGenNode || genNode;
-    // var result = "[" + (children.map(function (c) { return gen(c, state); }).join(',')) + "]" + (normalizationType ? ("," + normalizationType) : '')
     return ("[" + (children.map(function (c) { return gen(c, state); }).join(',')) + "]" + (normalizationType ? ("," + normalizationType) : ''))
   }
 }
@@ -9944,6 +9929,7 @@ function createFunction (code, errors) {
 
 function createCompileToFunctionFn (compile) {
   var cache = Object.create(null);
+
   return function compileToFunctions (
     template,
     options,
@@ -9968,6 +9954,7 @@ function createCompileToFunctionFn (compile) {
         }
       }
     }
+
     // check cache
     var key = options.delimiters
       ? String(options.delimiters) + template
@@ -10019,6 +10006,7 @@ function createCompileToFunctionFn (compile) {
         );
       }
     }
+
     return (cache[key] = res)
   }
 }
@@ -10026,7 +10014,6 @@ function createCompileToFunctionFn (compile) {
 /*  */
 
 function createCompilerCreator (baseCompile) {
-  //
   return function createCompiler (baseOptions) {
     function compile (
       template,
@@ -10041,7 +10028,6 @@ function createCompilerCreator (baseCompile) {
 
       if (options) {
         // merge custom modules
-
         if (options.modules) {
           finalOptions.modules =
             (baseOptions.modules || []).concat(options.modules);
@@ -10082,32 +10068,12 @@ function createCompilerCreator (baseCompile) {
 // `createCompilerCreator` allows creating compilers that use alternative
 // parser/optimizer/codegen, e.g the SSR optimizing compiler.
 // Here we just export a default compiler using the default parts.
-
-//createCompilerCreator允许创建编译器来替换parser/optimizer/codegen，比如
-//ssr编译器，这里仅仅是export默认的编译器使用默认的parts
-//createCompilerCreator的参数是一个function, 这个function就是默认编译函数
-//默认的编译函数，就是下面这个过程
-/**
- * var ast = parse(template.trim(), options);
-  optimize(ast, options);
-
-  var code = generate(ast, options);
- * return {
-    ast: ast,
-    render: code.render,
- }
- *
- *
- *
- */
 var createCompiler = createCompilerCreator(function baseCompile (
   template,
   options
 ) {
-
   var ast = parse(template.trim(), options);
   optimize(ast, options);
-
   var code = generate(ast, options);
   return {
     ast: ast,
@@ -10117,10 +10083,8 @@ var createCompiler = createCompilerCreator(function baseCompile (
 });
 
 /*  */
-//createCompiler返回的是有compile和compileToFunctions两个方法的的对象
-var ref$1 = createCompiler(baseOptions);
 
-console.log(ref$1)
+var ref$1 = createCompiler(baseOptions);
 var compileToFunctions = ref$1.compileToFunctions;
 
 /*  */
