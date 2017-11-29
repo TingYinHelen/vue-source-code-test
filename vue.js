@@ -8186,7 +8186,6 @@ var isNonPhrasingTag = makeMap(
 );
 
 /*  */
-console.log(modules$1)
 var baseOptions = {
   expectHTML: true,
   modules: modules$1,
@@ -8553,7 +8552,6 @@ function parse (
   platformIsPreTag = options.isPreTag || no;
   platformMustUseProp = options.mustUseProp || no;
   platformGetTagNamespace = options.getTagNamespace || no;
-
   transforms = pluckModuleFunction(options.modules, 'transformNode');
   preTransforms = pluckModuleFunction(options.modules, 'preTransformNode');
   postTransforms = pluckModuleFunction(options.modules, 'postTransformNode');
@@ -10025,7 +10023,6 @@ function createCompilerCreator (baseCompile) {
       finalOptions.warn = function (msg, tip) {
         (tip ? tips : errors).push(msg);
       };
-
       if (options) {
         // merge custom modules
         if (options.modules) {
