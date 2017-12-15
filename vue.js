@@ -8556,7 +8556,6 @@ function parse (
   platformIsPreTag = options.isPreTag || no;
   platformMustUseProp = options.mustUseProp || no;
   platformGetTagNamespace = options.getTagNamespace || no;
-
   transforms = pluckModuleFunction(options.modules, 'transformNode');
   preTransforms = pluckModuleFunction(options.modules, 'preTransformNode');
   postTransforms = pluckModuleFunction(options.modules, 'postTransformNode');
@@ -10028,7 +10027,6 @@ function createCompilerCreator (baseCompile) {
       finalOptions.warn = function (msg, tip) {
         (tip ? tips : errors).push(msg);
       };
-
       if (options) {
         // merge custom modules
         if (options.modules) {
