@@ -973,7 +973,11 @@ function defineReactive$$1 (
     configurable: true,
     get: function reactiveGetter () {
       var value = getter ? getter.call(obj) : val;
+      /**
+       * 暂时不知道Dep.target是什么
+       */
       if (Dep.target) {
+
         dep.depend();
         if (childOb) {
           childOb.dep.depend();
@@ -2578,7 +2582,6 @@ function mountComponent (
       vm._update(vm._render(), hydrating);
     };
   }
-
   vm._watcher = new Watcher(vm, updateComponent, noop);
   hydrating = false;
 
@@ -2903,6 +2906,7 @@ var Watcher = function Watcher (
       );
     }
   }
+  // 这里取值，因为
   this.value = this.lazy
     ? undefined
     : this.get();
@@ -4699,7 +4703,7 @@ function initGlobalAPI (Vue) {
   initExtend(Vue);
   initAssetRegisters(Vue);
 }
-
+/////////
 initGlobalAPI(Vue$3);
 
 Object.defineProperty(Vue$3.prototype, '$isServer', {
@@ -8186,7 +8190,6 @@ var isNonPhrasingTag = makeMap(
 );
 
 /*  */
-console.log(modules$1)
 var baseOptions = {
   expectHTML: true,
   modules: modules$1,
