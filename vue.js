@@ -973,9 +973,6 @@ function defineReactive$$1 (
     configurable: true,
     get: function reactiveGetter () {
       var value = getter ? getter.call(obj) : val;
-      /**
-       * 暂时不知道Dep.target是什么
-       */
       if (Dep.target) {
 
         dep.depend();
